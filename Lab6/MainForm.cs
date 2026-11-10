@@ -18,6 +18,7 @@ public partial class MainForm : Form
         polyhedronCombo.SelectedIndex = (int)PolyhedronKind.Tetrahedron;
 
         controlsPanel.Controls.Add(new Lab6.Transformations.AffineTransformPanel(scene));
+        controlsPanel.Controls.Add(new Lab6.Advanced.AdvancedTransformPanel(scene));
     }
 
     private void Scene_Changed(object sender, EventArgs e)

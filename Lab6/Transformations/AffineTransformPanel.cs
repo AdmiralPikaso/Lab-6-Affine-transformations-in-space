@@ -30,7 +30,7 @@ public sealed class AffineTransformPanel : UserControl
         AddButton(shift, "Применить смещение", 72, 238,
             () => AffineTransformations.Translation((double)shiftX.Value, (double)shiftY.Value, (double)shiftZ.Value));
 
-        GroupBox rotation = Group("2. Поворот вокруг оси", 111, 105);
+        GroupBox rotation = Group("2. Поворот вокруг оси координат", 111, 105);
         AddLabel(rotation, "Ось", 12, 22);
         AddLabel(rotation, "Угол, °", 130, 22);
         axisChoice.SetBounds(12, 41, 104, 25);
