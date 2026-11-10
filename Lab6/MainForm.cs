@@ -17,13 +17,7 @@ public partial class MainForm : Form
         scene.Changed += Scene_Changed;
         polyhedronCombo.SelectedIndex = (int)PolyhedronKind.Tetrahedron;
 
-        // ======================= Панели других участников =======================
-        // Каждый делает свой UserControl (ширина ~270 px), принимающий Scene в конструкторе,
-        // и добавляет его сюда ОДНОЙ строкой. MainForm.Designer.cs не трогать — будут конфликты.
-        //
-        // controlsPanel.Controls.Add(new TransformPanel(scene));          // человек 2
-        // controlsPanel.Controls.Add(new RotationProjectionPanel(scene)); // человек 3
-        // ========================================================================
+        controlsPanel.Controls.Add(new Lab6.Transformations.AffineTransformPanel(scene));
     }
 
     private void Scene_Changed(object sender, EventArgs e)
