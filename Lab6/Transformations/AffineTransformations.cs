@@ -1,4 +1,4 @@
-﻿using Lab6.Geometry;
+using Lab6.Geometry;
 
 namespace Lab6.Transformations;
 
@@ -30,50 +30,33 @@ public static class AffineTransformations
     public static Matrix4 Rotation(CoordinateAxis axis, double angleDegrees)
     {
         RequireFinite(angleDegrees);
+        (int first, int second) = axis switch
+        {
+            CoordinateAxis.X => (1, 2),
+            CoordinateAxis.Y => (2, 0),
+            CoordinateAxis.Z => (0, 1),
+            _ => throw new ArgumentOutOfRangeException(nameof(axis))
+        };
+
         double angle = angleDegrees * Math.PI / 180.0;
         double c = Math.Cos(angle);
         double s = Math.Sin(angle);
         Matrix4 matrix = Matrix4.Identity();
-
-        switch (axis)
-        {
-            case CoordinateAxis.X:
-                matrix[1, 1] = c;
-                matrix[1, 2] = s;
-                matrix[2, 1] = -s;
-                matrix[2, 2] = c;
-                break;
-            case CoordinateAxis.Y:
-                matrix[0, 0] = c;
-                matrix[0, 2] = -s;
-                matrix[2, 0] = s;
-                matrix[2, 2] = c;
-                break;
-            case CoordinateAxis.Z:
-                matrix[0, 0] = c;
-                matrix[0, 1] = s;
-                matrix[1, 0] = -s;
-                matrix[1, 1] = c;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(axis));
-        }
+        matrix[first, first] = c;
+        matrix[first, second] = s;
+        matrix[second, first] = -s;
+        matrix[second, second] = c;
         return matrix;
     }
 
-    public static Matrix4 Reflection(CoordinatePlane plane)
+    public static Matrix4 Reflection(CoordinatePlane plane) => plane switch
     {
-        Matrix4 matrix = Matrix4.Identity();
-        switch (plane)
-        {
-            case CoordinatePlane.XY: matrix[2, 2] = -1; break; // z -> -z
-            case CoordinatePlane.XZ: matrix[1, 1] = -1; break; // y -> -y
-            case CoordinatePlane.YZ: matrix[0, 0] = -1; break; // x -> -x
-            default: throw new ArgumentOutOfRangeException(nameof(plane));
-        }
-        return matrix;
-    }
-    
+        CoordinatePlane.XY => Scaling(1, 1, -1),
+        CoordinatePlane.XZ => Scaling(1, -1, 1),
+        CoordinatePlane.YZ => Scaling(-1, 1, 1),
+        _ => throw new ArgumentOutOfRangeException(nameof(plane))
+    };
+
     public static Matrix4 ScalingAroundCenter(Polyhedron model, double sx, double sy, double sz)
     {
         ArgumentNullException.ThrowIfNull(model);
